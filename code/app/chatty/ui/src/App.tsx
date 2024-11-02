@@ -20,6 +20,8 @@ function App() {
   const [x, setX] = useState(0)
   const { data: random, loading: lRandom } = useQuery('db:get', { x })*/
   const [messages, setMessages] = useState([]);
+
+  
   return (
     <>
         <AppContext.Provider value={{

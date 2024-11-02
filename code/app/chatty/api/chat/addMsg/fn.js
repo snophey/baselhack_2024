@@ -4,7 +4,7 @@ import { getSubscriptions } from "../../db/subscription.js"
 
 /**
  * 
- * @type {import("@based/functions").BasedFunction<{messages: string, chatId: string }>}
+ * @type {import("@based/functions").BasedFunction<{message: string, chatId: string }>}
  */
 export default async (_based, _payload, _ctx) => {
     console.debug("Add new message", "sessionId", _ctx.session.id )
@@ -16,7 +16,7 @@ export default async (_based, _payload, _ctx) => {
     }
    
     if(!chatId) throw new Error("Failed to create new chat. ")
-    const m = await addMessage(chatId, message, false)
+    const m = await addMessage(chatId, _payload.message, false)
 
     getSubscriptions().publish(`${chatId}`)
     console.log(m)

@@ -9,10 +9,8 @@ export function ChatInput() {
   const { onMessageSubmit, sessionId, setMessages, messages } = useContext(AppContext);
   const { revalidate } = useRevalidator();
   const { chatId } = useParams();
-
   const submit = useCallback(() => {
     onMessageSubmit(userInput, chatId ? parseInt(chatId) : null, sessionId);
-    setMessages([...messages, { id: messages.length, text: userInput, isAiMessage: false }]);
     setUserInput("");
     revalidate();
   }, [onMessageSubmit, sessionId, setUserInput, userInput]);
