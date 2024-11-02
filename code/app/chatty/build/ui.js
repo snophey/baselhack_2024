@@ -10,3 +10,5 @@ export async function buildUI() {
     console.log(`⚡ build completed.`)
 
 }
+
+await buildUI()

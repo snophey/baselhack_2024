@@ -29,7 +29,7 @@ const App = () => {
           fontSize: '20pt',
         }}
       >
-        Hello World! {loading ? '-' : counter}
+        Hello Basel! {loading ? '-' : counter}
       </h2>
     </div>
   )
