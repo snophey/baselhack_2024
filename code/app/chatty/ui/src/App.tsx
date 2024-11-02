@@ -1,26 +1,38 @@
-import { useState } from 'react'
-import './App.css'
-import { Button, MantineProvider } from '@mantine/core'
-import { Chatbot } from './pages/Chatbot'
-import { useQuery } from '@based/react'
+import "@mantine/core/styles.css";
+import "./App.css";
+//import { useState } from 'react'
+import { MantineProvider } from "@mantine/core";
+//import { useQuery } from '@based/react'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ChatPage } from "./pages/ChatPage";
+import { AppContext } from "./AppContext";
 
-
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ChatPage></ChatPage>,
+  },
+]);
 
 function App() {
-  const { data: counter, loading } = useQuery('counter')
+  /*const { data: counter, loading } = useQuery('counter')
   const [x, setX] = useState(0)
-  const { data: random, loading: lRandom } = useQuery('db:get', { x })
-
+  const { data: random, loading: lRandom } = useQuery('db:get', { x })*/
   return (
     <>
+        <AppContext.Provider value={{
+          sessionId: '',
+          messages: [],
+          onMessageSubmit: (msg, sessId) => {
+            console.log(`User ${sessId} sent message: ${msg}`);
+          }
+        }}>
       <MantineProvider>
-        {lRandom ? '....' : <div>Random value: {random}</div>}
-        <Button onClick={() => { console.log(x); setX(Math.random()) }}>Update</Button>
-        <Chatbot></Chatbot>
+          <RouterProvider router={router} />
       </MantineProvider>
+        </AppContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
