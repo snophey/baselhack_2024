@@ -42,6 +42,8 @@ spec:
         - name: app
           # NOTE : you can update to the latest release
           image: ${APP_IMAGE}
+          command: [ "node" ]
+          args: [ "chatty/server.js" ]
           envFrom:
             - secretRef:
                 name: app-secrets

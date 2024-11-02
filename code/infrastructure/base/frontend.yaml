@@ -42,6 +42,9 @@ spec:
         - name: app-ui
           # NOTE : you can update to the latest release
           image: ${APP_IMAGE}
+
+          command: [ "npx" ]
+          args: [ "http-server", "chatty/ui/dist", "-p", "8000", "-c-1"]
           env:
             - name: BASE_URL
               value: ${PROJECT_NAME}-${ENVIRONMENT}.rovner.ch
