@@ -1,5 +1,6 @@
 import { BasedServer } from '@based/server';
 import sayHello from './api/hello/config.js'
+import ui from './ui/config.js'
 /**
  * @param {number} port 
  * @returns 
@@ -9,6 +10,7 @@ async function startServer(port) {
     port,
     functions: {
       configs: {
+        ...ui,
         ...sayHello
       },
     },
