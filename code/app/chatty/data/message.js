@@ -24,17 +24,19 @@ export async function getAllMessagesByChatId(chatId) {
  * @param {string} chatId The chat ID to add the message to
  * @param {string} message The message text to add
  * @param {boolean} isAiMessage Whether the message is from the AI
- * @param {function(Error, number)} callback The callback function that receives the error and the last inserted row ID (if failed or successful respectively)
+ * @returns {Promise<number>} A promise that resolves to the ID of the new message
  */
-export async function addMessage(chatId, message, isAiMessage, callback) {
+export async function addMessage(chatId, message, isAiMessage) {
   const db = await getDatabase();
   const query = 'INSERT INTO message (chat_id, message, is_ai_message) VALUES (?, ?, ?)';
-  db.run(query, [chatId, message, isAiMessage], function(err) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, this.lastID);
-    }
+  return new Promise((resolve, reject) => {
+    db.run(query, [chatId, message, isAiMessage], function(err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this.lastID);
+      }
+    });
   });
 }
 
