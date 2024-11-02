@@ -5,12 +5,14 @@ import { ChatInput } from '../components/ChatInput/ChatInput';
 import { MessageView } from '../components/MessageView/MessageView';
 import { Logo } from '../components/Logo/Logo';
 import ColorModeToggle from '../components/ColorModeToggle/ColorModeToggle';
+import { useParams } from 'react-router-dom';
+import { Hero } from '../components/Hero/Hero';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
   const { ref, height } = useElementSize();
   const { ref: logoRef, height: logoHeight, width: logoWidth } = useElementSize();
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+  const { chatId } = useParams();
 
   return (
     <AppShell
@@ -41,7 +43,9 @@ export function ChatPage() {
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
       <AppShell.Main>
-        <MessageView paddingBottom={height} />
+        {
+          chatId ? <MessageView paddingBottom={height} /> : <Hero />
+        }
       </AppShell.Main>
 
       <AppShell.Footer ref={ref} withBorder={false}>
