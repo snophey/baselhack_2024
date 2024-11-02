@@ -1,12 +1,14 @@
 
-import { AppShell, Burger } from '@mantine/core'
+import { AppShell, Box, Burger } from '@mantine/core'
 import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { ChatInput } from '../components/ChatInput/ChatInput';
 import { MessageView } from '../components/MessageView/MessageView';
+import { Logo } from '../components/Logo/Logo';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
   const { ref, height } = useElementSize();
+  const { ref: logoRef, height: logoHeight, width: logoWidth } = useElementSize();
 
   return (
     <AppShell
@@ -18,14 +20,18 @@ export function ChatPage() {
       }}
       padding="md"
     >
-      <AppShell.Header>
+      <AppShell.Header display={"flex"} px='md' py='xs' style={{
+        flexDirection: 'row',
+      }}>
         <Burger
           opened={opened}
           onClick={toggle}
           hiddenFrom="sm"
           size="sm"
-        />
-        <div>Logo</div>
+          />
+        <Box ref={logoRef}>
+          <Logo width={logoWidth} height={logoHeight} />
+        </Box>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>

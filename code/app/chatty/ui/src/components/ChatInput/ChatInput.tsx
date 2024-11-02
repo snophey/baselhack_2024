@@ -3,7 +3,6 @@ import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { PiPaperPlaneBold } from "react-icons/pi";
 import { useParams, useRevalidator } from "react-router-dom";
-import classes from "./ChatInput.module.css";
 
 export function ChatInput() {
   const [userInput, setUserInput] = useState("");
@@ -41,7 +40,6 @@ export function ChatInput() {
       m="md"
       radius="lg"
       size="lg"
-      className={classes.classInput}
       variant="filled"
       onKeyDown={handleKeyDown}
       value={userInput}
