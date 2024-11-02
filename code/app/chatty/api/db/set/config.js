@@ -7,7 +7,6 @@ import fn from './fn.js'
 export default {
     "db:set": {
         type: 'function',
-        public: true,
         name: 'db:set',
         fn
     }

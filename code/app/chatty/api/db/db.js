@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 import os from 'os';
-  
+
 let db = null;
 
 const randomFilename = () => {
@@ -17,21 +17,34 @@ export const initDatabase = async () => {
   console.log(`Using database at ${dbPath}`);
   db = new sqlite3.Database(dbPath);
   // Create the message table if it doesn't exist
-  db.run(`CREATE TABLE IF NOT EXISTS message (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    chat_id INTEGER NOT NULL,
-    message TEXT NOT NULL,
-    is_ai_message BOOLEAN NOT NULL
-  )`);
+  await new Promise((resolve, reject) => {
+    db.run(`CREATE TABLE IF NOT EXISTS message (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      chat_id INTEGER NOT NULL,
+      message TEXT NOT NULL,
+      is_ai_message BOOLEAN NOT NULL
+  )`, (result, err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  })
 
   // Create the chat table if it doesn't exist
-  db.run(`CREATE TABLE IF NOT EXISTS chat (
+  await new Promise((resolve, reject) => {
+    db.run(`CREATE TABLE IF NOT EXISTS chat (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     session_id TEXT NOT NULL
-  )`);
-
-  // Wait for the database to be ready
-  await sleep(1000);
+  )`, (result, err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  })
 
   return db;
 }
