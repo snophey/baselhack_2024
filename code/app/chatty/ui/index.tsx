@@ -3,8 +3,14 @@ import { render } from 'react-dom'
 import based from '@based/client'
 import { Provider, useQuery } from '@based/react'
 
+
+console.log(window.location.host)
+let url = `ws://${window.location.host}`
+if(window.location.hostname !== 'localhost') {
+  url = `wss://${window.location.host}` 
+}
 export const client = based({
-    url: 'ws://localhost:8000'
+    url 
 })
 
 const App = () => {
