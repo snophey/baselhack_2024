@@ -5,6 +5,7 @@ import dbGet from './api/db/get/config.js'
 import counter from './api/counter/config.js'
 import authorize from './api/authorize/fn.js'
 import { closeDatabase } from './api/db/db.js';
+import chatAddMsg from './api/chat/addMsg/config.js'
 
 /**
  * @param {number} port 
@@ -28,7 +29,8 @@ async function startServer(port) {
         ...counter,
         ...dbGet,
         ...dbSet,
-        ...authorize
+        ...authorize,
+        ...chatAddMsg
       },
     },
   });
