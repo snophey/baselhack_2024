@@ -6,5 +6,15 @@ import { buildUI } from './build/buildUI.js'
  */
 export default async (_, payload) => {
     await buildUI()
-    return readFileSync('./chatty/ui/index.html').toString()
+    const app = readFileSync('./chatty/ui/dist/index.js').toString()
+    return `
+        <html>
+            
+            <body>
+                <script type="module">
+                    ${app}
+                </script>
+            <body>
+        </html>
+    `
 }
