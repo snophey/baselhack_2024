@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: app-ui
+  name: app-ui
+spec:
+  ports:
+    - name: http
+      port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    run: app-ui
+    app: app-ui
+  sessionAffinity: None
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-ui
+  labels:
+    run: app-ui
+    app: app-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: app-ui
+      app: app-ui
+  template:
+    metadata:
+      labels:
+        run: app-ui
+        app: app-ui
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: app-ui
+          # NOTE : you can update to the latest release
+          image: ${APP_IMAGE}
+
+          command: [ "npx" ]
+          args: [ "http-server", "chatty/ui/dist", "-p", "8000", "-c-1"]
+          env:
+            - name: BASE_URL
+              value: ${PROJECT_NAME}-${ENVIRONMENT}.rovner.ch
+          ports:
+            - containerPort: 8000
+              name: http
+          # NOTE: you can increase these resources
+          resources:
+            requests:
+              memory: 1Mi
+              cpu: 0.1
+            limits:
+              memory: 300Mi
+              cpu: 2

@@ -1,8 +1,10 @@
 import { BasedServer } from '@based/server';
 import sayHello from './api/hello/config.js'
-import ui from './ui/config.js'
+import dbSet from './api/db/set/config.js'
+import dbGet from './api/db/get/config.js'
 import counter from './api/counter/config.js'
 import { closeDatabase } from './data/db.js';
+
 /**
  * @param {number} port 
  * @returns 
@@ -12,9 +14,10 @@ async function startServer(port) {
     port,
     functions: {
       configs: {
-        ...ui,
         ...sayHello,
-        ...counter
+        ...counter,
+        ...dbGet,
+        ...dbSet
       },
     },
   });

@@ -1,16 +1,14 @@
-import fn from './index.js'
+import fn from './fn.js'
 /**
  * @type {import("@based/functions").BasedFunctionConfigs}
  * 
  * This module exports a default object containing the `hello` function configuration.
  */
 export default {
-    app: {
-        public: true,
-        name: 'app',
+    "db:set": {
         type: 'function',
-        path: '/',
-        favicon: './favicon.ico',
+        public: true,
+        name: 'db:set',
         fn
     }
 }

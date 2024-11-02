@@ -2,6 +2,7 @@
 resources:
 - app.yaml
 - ingress.yaml
+- frontend.yaml
 
 secretGenerator:
 - name: app-secrets

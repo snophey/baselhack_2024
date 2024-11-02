@@ -18,6 +18,13 @@ spec:
             name: app
             port:
               name: http
+        path: /api
+        pathType: Prefix
+      - backend:
+          service:
+            name: app-ui
+            port:
+              name: http
         path: /
         pathType: Prefix
   tls:
