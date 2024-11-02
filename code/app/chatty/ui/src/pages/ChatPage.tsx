@@ -2,6 +2,7 @@
 import { AppShell, Burger } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks';
 import { ChatInput } from '../components/ChatInput/ChatInput';
+import { MessageView } from '../components/MessageView/MessageView';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
@@ -29,6 +30,7 @@ export function ChatPage() {
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
       <AppShell.Main>
+        <MessageView />
       </AppShell.Main>
 
       <AppShell.Footer>

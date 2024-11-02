@@ -1,16 +1,17 @@
 import { createContext } from "react";
 
-type Message = {
+export type Message = {
   id: number;
   text: string;
   isAiMessage: boolean;
 }
 
-type onMessageSubmit = (message: string, sessionId: string) => void;
+export type onMessageSubmit = (message: string, sessionId: string) => void;
 
-type AppContext = {
+export type AppContext = {
   sessionId: string;
   messages: Message[];
+  setMessages: (messages: Message[]) => void;
   onMessageSubmit: onMessageSubmit;
 }
 
@@ -18,5 +19,6 @@ type AppContext = {
 export const AppContext = createContext<AppContext>({
   sessionId: '',
   messages: [],
+  setMessages: () => {},
   onMessageSubmit: () => {},
 });

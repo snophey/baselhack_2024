@@ -5,10 +5,12 @@ import { PiPaperPlaneBold } from "react-icons/pi";
 
 export function ChatInput() {
   const [userInput, setUserInput] = useState("");
-  const { onMessageSubmit, sessionId } = useContext(AppContext);
+  const { onMessageSubmit, sessionId, setMessages, messages } = useContext(AppContext);
+
 
   const submit = useCallback(() => {
     onMessageSubmit(userInput, sessionId);
+    setMessages([...messages, { id: messages.length, text: userInput, isAiMessage: false }]);
     setUserInput("");
   }, [onMessageSubmit, sessionId, setUserInput, userInput]);
 
