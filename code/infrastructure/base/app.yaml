@@ -43,6 +43,8 @@ spec:
           # NOTE : you can update to the latest release
           image: ${APP_IMAGE}
           env:
+            - name: BASE_URL
+              value: ${PROJECT_NAME}-${ENVIRONMENT}.rovner.ch
             - name: TYPESENSE_API_KEY
               valueFrom:
                 secretKeyRef:
