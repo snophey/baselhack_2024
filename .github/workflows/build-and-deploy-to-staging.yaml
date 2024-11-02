@@ -2,6 +2,8 @@ name: Build image and deploy to staging
 
 on:
   push:
+    paths:
+      - 'code/**'
     branches:
       - main
 
