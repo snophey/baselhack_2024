@@ -14,11 +14,12 @@ const sleep = (ms) => {
 
 export const initDatabase = async () => {
   const dbPath = process.env.DB_PATH || `${os.tmpdir()}/${randomFilename()}.db`;
+  console.log(`Using database at ${dbPath}`);
   db = new sqlite3.Database(dbPath);
   // Create the message table if it doesn't exist
   db.run(`CREATE TABLE IF NOT EXISTS message (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    chat_id TEXT NOT NULL,
+    chat_id INTEGER NOT NULL,
     message TEXT NOT NULL,
     is_ai_message BOOLEAN NOT NULL
   )`);
@@ -26,7 +27,6 @@ export const initDatabase = async () => {
   // Create the chat table if it doesn't exist
   db.run(`CREATE TABLE IF NOT EXISTS chat (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    chat_id TEXT NOT NULL,
     session_id TEXT NOT NULL
   )`);
 
