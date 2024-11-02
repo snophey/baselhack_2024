@@ -182,6 +182,6 @@ Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegebe
     contextMessages.push(message[0])
     console.log(message) 
 
-    await addMessage(chatId, contextMessages.at(-1), true)
+    await addMessage(chatId, contextMessages.at(-1).content, true)
 }
 
