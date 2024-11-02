@@ -25,11 +25,10 @@ export function Chatbot() {
       {/* Message display area */}
       <ScrollArea style={{ flex: 1, marginBottom: '1rem', padding: '1rem', backgroundColor: '#f7f9fc' }}>
         {messages.map((message, index) => (
-          <Group key={index} position={message.sender === 'User' ? 'right' : 'left'} style={{ marginBottom: '1rem' }}>
+          <Group key={index} style={{ marginBottom: '1rem' }}>
             <Paper
               shadow="xs"
               radius="md"
-              padding="md"
               style={{
                 backgroundColor: message.sender === 'User' ? '#4dabf7' : '#e9ecef',
                 color: message.sender === 'User' ? 'white' : 'black',
@@ -43,7 +42,7 @@ export function Chatbot() {
       </ScrollArea>
 
       {/* Input area */}
-      <Group position="apart" noWrap style={{ padding: '0.5rem', backgroundColor: '#e9ecef' }}>
+      <Group>
         <TextInput
           placeholder="Type your message..."
           value={input}
