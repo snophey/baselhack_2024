@@ -1,12 +1,14 @@
 {
     "name": "hack",
     "type":"module" ,
-    "dependencies": {
-        "@based/server": "9.1.1"
-    },
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@based/server": "9.1.1",
+        "esbuild": "0.24.0"
     }
+    
 }
