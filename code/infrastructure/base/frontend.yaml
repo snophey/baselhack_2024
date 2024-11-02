@@ -30,6 +30,8 @@ spec:
     matchLabels:
       run: app-ui
       app: app-ui
+  strategy: 
+    type: Recreate
   template:
     metadata:
       labels:

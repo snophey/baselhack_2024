@@ -30,6 +30,8 @@ spec:
     matchLabels:
       run: app
       app: app
+  strategy: 
+    type: Recreate
   template:
     metadata:
       labels:
