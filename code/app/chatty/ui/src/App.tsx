@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChatPage } from "./pages/ChatPage";
 import { AppContext } from "./AppContext";
 import { useEffect, useState } from "react";
+import { useClient } from "@based/react";
 
 const router = createBrowserRouter([
   {
@@ -25,11 +26,15 @@ function App() {
   const { data: random, loading: lRandom } = useQuery('db:get', { x })*/
   const [messages, setMessages] = useState([]);
   const [sessionId, setSessionId] = useState("");
+  const client = useClient()
 
   useEffect(() => {
     const ssid = localStorage.getItem("sessionId") || crypto.randomUUID();
     localStorage.setItem("sessionId", ssid);
     setSessionId(ssid);
+    client.setAuthState({
+      token: ssid
+    })
   }, []);
   
   return (

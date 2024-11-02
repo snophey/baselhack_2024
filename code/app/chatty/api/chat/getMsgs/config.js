@@ -1,4 +1,6 @@
 import fn from './fn.js'
+import authorize from './authorize.js'
+
 /**
  * @type {import("@based/functions").BasedFunctionConfigs}
  * 
@@ -8,6 +10,7 @@ export default {
     'chat:getMsgs': {
         type: 'function',
         name: 'chat:getMsgs',
-        fn
+        fn,
+        authorize 
     }
 }

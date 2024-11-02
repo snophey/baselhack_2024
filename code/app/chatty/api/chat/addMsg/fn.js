@@ -8,12 +8,12 @@ import { generateNextMessage } from './../../ai/generateNextMessage.js'
  * @type {import("@based/functions").BasedFunction<{message: string, chatId: string }>}
  */
 export default async (_based, _payload, _ctx) => {
-    console.debug("Add new message", "sessionId", _ctx.session.id )
+    console.debug("Add new message", "sessionId", _ctx.session.authState.token )
    
     let chatId = _payload.chatId;
-    console.log(await sessionExists(_ctx.session.id))
-    if(!await sessionExists(_ctx.session.id)) {
-      chatId = await createNewChat(_ctx.session.id)
+    console.log(await sessionExists(_ctx.session.authState.token))
+    if(!await sessionExists(_ctx.session.authState.token)) {
+      chatId = await createNewChat(_ctx.session.authState.token)
     }
    
     if(!chatId) throw new Error("Failed to create new chat. ")
