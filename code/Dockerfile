@@ -7,5 +7,5 @@ WORKDIR /app
 
 # Install the dependencies
 RUN npm install
-
+RUN npm run build:ui
 CMD ["chatty/server.js"]
