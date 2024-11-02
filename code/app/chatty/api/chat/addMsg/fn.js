@@ -1,6 +1,6 @@
 import chat, { createNewChat, sessionExists } from "../../db/query/chat.js"
 import message, { addMessage } from "../../db/query/message.js"
-
+import { getSubscriptions } from "../../db/subscription.js"
 
 /**
  * 
@@ -17,6 +17,8 @@ export default async (_based, _payload, _ctx) => {
    
     if(!chatId) throw new Error("Failed to create new chat. ")
     const m = await addMessage(chatId, message, false)
+
+    getSubscriptions().publish(`${chatId}`)
     console.log(m)
     console.log(chatId)
     return { chatId }

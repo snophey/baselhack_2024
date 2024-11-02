@@ -6,6 +6,7 @@ import counter from './api/counter/config.js'
 import authorize from './api/authorize/fn.js'
 import { closeDatabase } from './api/db/db.js';
 import chatAddMsg from './api/chat/addMsg/config.js'
+import chatGetMsgs from './api/chat/getMsgs/config.js'
 import chatQueryMsgs from './api/chat/queryMsg/config.js'
 
 /**
@@ -32,13 +33,14 @@ async function startServer(port) {
         ...dbSet,
         ...authorize,
         ...chatAddMsg,
-        ...chatQueryMsgs
+        ...chatQueryMsgs,
+        ...chatGetMsgs
       },
     },
   });
   await server.start();
   console.log(`Server started on port ${port}`);
-  
+    
   return server;
 }
 
