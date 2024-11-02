@@ -1,5 +1,5 @@
 
-# Project Name
+# ChatAVB (working title)
 
 This project provides an example server setup. Follow the instructions below to get started.
 
