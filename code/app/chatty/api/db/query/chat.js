@@ -1,4 +1,4 @@
-import { getDatabase } from './db.js';
+import { getDatabase } from '../db.js';
 
 /**
  * Create a new chat in the database

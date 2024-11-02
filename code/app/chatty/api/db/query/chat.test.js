@@ -1,6 +1,6 @@
 import { describe } from "node:test";
-import { getAllMessagesByChatId, addMessage } from "../chatty/data/message";
-import { createNewChat, getAllChatsBySessionId } from "../chatty/data/chat";
+import { getAllMessagesByChatId, addMessage } from "./message";
+import { createNewChat, getAllChatsBySessionId } from "./chat";
 
 describe('getAllMessagesByChatId', () => {
   it('should retrieve all messages by chat ID', async () => {

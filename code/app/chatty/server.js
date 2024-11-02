@@ -3,7 +3,7 @@ import sayHello from './api/hello/config.js'
 import dbSet from './api/db/set/config.js'
 import dbGet from './api/db/get/config.js'
 import counter from './api/counter/config.js'
-import { closeDatabase } from './data/db.js';
+import { closeDatabase } from './api/db/db.js';
 
 /**
  * @param {number} port 

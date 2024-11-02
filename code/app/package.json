@@ -4,7 +4,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start:server": "node chatty/server.js"
+        "start:server": "node chatty/server.js",
+        "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest"
     },
     "dependencies": {
         "@based/server": "9.1.1",
