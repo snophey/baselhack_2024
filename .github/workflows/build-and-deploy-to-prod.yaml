@@ -76,7 +76,8 @@ jobs:
         working-directory: ./code/infrastructure
         run: |
             echo -n $K8S_CA_CRT | base64 -d > $HOME/ca.crt
-            echo "TYPESENSE_API_KEY=${{ secrets.TYPESENSE_API_KEY }}" > base/typesense.env
+            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > base/secrets.env
+            echo "SEARCH_API_KEY=${{ secrets.SEARCH_API_KEY }}" >> base/secrets.env
             export APP_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.push.outputs.digest }}
             export GIT_COMMIT=${{ github.sha }}
             kubectl kustomize "./${{ env.ENVIRONMENT }}" | envsubst > manifest.yaml

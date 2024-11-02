@@ -4,11 +4,11 @@ resources:
 - ingress.yaml
 
 secretGenerator:
-- name: typesense-api-key
+- name: app-secrets
   options:
     disableNameSuffixHash: true
   envs:
-  - typesense.env
+  - secrets.env
 
 commonAnnotations:
   gitCommit: ${GIT_COMMIT}

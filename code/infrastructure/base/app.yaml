@@ -42,14 +42,12 @@ spec:
         - name: app
           # NOTE : you can update to the latest release
           image: ${APP_IMAGE}
+          envFrom:
+            - secretRef:
+                name: app-secrets
           env:
             - name: BASE_URL
               value: ${PROJECT_NAME}-${ENVIRONMENT}.rovner.ch
-            - name: TYPESENSE_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: typesense-api-key
-                  key: TYPESENSE_API_KEY
             - name: DB_PATH
               value: /usr/share/app/data
           ports:
