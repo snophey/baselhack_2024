@@ -3,7 +3,7 @@ import { createContext } from "react";
 export type Message = {
   id: number;
   message: string;
-  isAiMessage: boolean;
+  is_ai_message: number;
 }
 
 export type onMessageSubmit = (message: string, chatId: number | null, sessionId: string) => void;

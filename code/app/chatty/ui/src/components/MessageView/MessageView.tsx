@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AppContext, Message as TMessage } from "../../AppContext";
 import { Flex, rem, Text, useComputedColorScheme } from "@mantine/core";
 import { useParams } from "react-router-dom";
@@ -7,14 +7,22 @@ import { useClient } from "@based/react";
 function Message({ msg }: { msg: TMessage }) {
   const colorScheme = useComputedColorScheme();
 
-  const speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-gray-1)';
+  let speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-gray-1)';
+  if (!!msg.is_ai_message) {
+    speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-lime-0)';
+  } else {
+    speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-gray-1)';
+  }
+
 
   console.log(`Message: ${JSON.stringify(msg)}`);
 
-  return (<Flex direction={"column"}>
+  return (<Flex direction={"column"} style={{
+    alignSelf: !!msg.is_ai_message ? 'flex-start' : 'flex-end',
+  }}>
     <Text style={{
       fontWeight: 'bold',
-    }} size={'sm'}>{!!msg.isAiMessage ? 'ChatAVB' : 'You'}</Text>
+    }} size={'sm'}>{!!msg.is_ai_message ? 'ChatAVB' : 'You'}</Text>
     <Text size={'md'} style={{
       padding: 'var(--mantine-spacing-sm)',
       borderRadius: 'var(--mantine-radius-lg)',
@@ -44,6 +52,11 @@ export function MessageView({ paddingBottom }: {paddingBottom: number}) {
       });
     }
   }, [chatId]);
+
+  // smooth scroll to the bottom of the chat if the messages change
+  useEffect(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [messages]);
 
   return (
     <Flex direction={"column"} gap={"md"} style={{ height: "100%", overflowY: "auto", paddingBottom: rem(paddingBottom) }}>
