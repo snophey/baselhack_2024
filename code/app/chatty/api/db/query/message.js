@@ -1,4 +1,4 @@
-import { getDatabase } from './db.js';
+import { getDatabase } from '../db.js';
 
 /**
  * Retrieve all messages by chat ID
