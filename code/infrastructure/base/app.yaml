@@ -18,7 +18,7 @@ spec:
 
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: app
   labels:
@@ -63,18 +63,3 @@ spec:
             limits:
               memory: 1000Mi
               cpu: 2
-          volumeMounts:
-            - name: data
-              mountPath: /usr/share/app/data
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        # NOTE: Make sure to update your storageClass depending on your provider
-        storageClassName: csi-cinder-high-speed
-        # NOTE: You can increase the storage size
-        resources:
-          requests:
-            storage: 1Gi
