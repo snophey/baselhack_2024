@@ -15,7 +15,6 @@ const searchApiKey = process.env.SEARCH_API_KEY ; // string
 
 const openaiEmbeddingsEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15"; // string
 const embeddingModelName = "text-embedding-ada-002"; // string
-const openaiChatEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"; // string
 const openaiApiKey = process.env.OPENAI_API_KEY; // string
 const deployment = "klary-dev-ai"; // string
 

@@ -32,7 +32,6 @@ const searchEndpoint = "https://klary-dev-ai.search.windows.net"; // string
 const searchApiKey = process.env.SEARCH_API_KEY; // string
 
 const openaiEmbeddingsEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15"; // string
-const embeddingModelName = "text-embedding-ada-002"; // string
 const openaiChatEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"; // string
 const openaiApiKey = process.env.OPENAI_API_KEY; // string
 const deployment = "klary-dev-ai"; // string
@@ -156,17 +155,15 @@ export async function generateNextMessage(chatId) {
         {
             role: 'system',
             content: `  
-Sie sind ein Chat-Assistent, der den Kunden Informationen über Versicherungspolicen gibt. 
-Sie erhalten indizierte Versicherungsdokumente des Versicherers als „Quellen“, die mithilfe der Azure-Ai-Suche indiziert werden. 
-Die Antworten sollten jedoch wahrheitsgemäß sein und mit den angegebenen Quellen übereinstimmen.
-Wenn es nicht genügend Informationen gibt, um zu antworten, sagen Sie, dass Sie es nicht wissen.
-Beantworten Sie die Anfrage in einer prägnanten, unterhaltsamen und freundlichen Art und Weise. 
-Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegeben sind. Ihre Antwort sollte also auch auf Deutsch sein.
+Du bist Chatassistent für Pax Insurance und versorgst Kunden mit Informationen zu Versicherungspolicen. Als „Quellen“ erhältst du indexierte Versicherungsunterlagen vom Versicherer, die mittels Azure Ai Search indexiert werden.
+Die Antworten sollten jedoch wahrheitsgetreu und konsistent mit den angegebenen Quellen sein. Beantworte nur die Fragen aus dem Versicherungsbereich. Bei anderen Fragen sag, dass du die Antwort nicht weißt.
+Wenn die Informationen zur Beantwortung nicht ausreichen, sag, dass du es nicht weißt.
+Beantworte die Anfrage kurz, unterhaltsam und freundlich.
+Bedenke, dass die Anfrage und die Quellen auf Deutsch sind, also sollte auch deine Antwort auf Deutsch sein.
         ` }
     ]
         .concat(messages)
         
-
     const topResultSum = await getSummarizedTopSearchResults(contextMessages[contextMessages.length -1].content)
     contextMessages.push(topResultSum)
     
