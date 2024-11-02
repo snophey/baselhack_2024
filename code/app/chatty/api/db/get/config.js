@@ -7,7 +7,6 @@ import fn from './fn.js'
 export default {
     "db:get": {
         type: 'query',
-        public: true,
         name: 'db:get',
         fn
     }

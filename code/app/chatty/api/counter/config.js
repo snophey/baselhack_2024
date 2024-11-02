@@ -7,7 +7,6 @@ import fn from './fn.js'
 export default {
     counter: {
         type: 'query',
-        public: true,
         name: 'counter',
         fn
     }

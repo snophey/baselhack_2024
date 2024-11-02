@@ -1,6 +1,6 @@
-import { getDB } from "../db.js"
+import { getDatabase } from "../db.js"
 
-const db = getDB()
+const db = getDatabase()
 
 /**
  * 
