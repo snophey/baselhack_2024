@@ -1,11 +1,12 @@
 
 import { AppShell, Burger } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { ChatInput } from '../components/ChatInput/ChatInput';
 import { MessageView } from '../components/MessageView/MessageView';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
+  const { ref, height } = useElementSize();
 
   return (
     <AppShell
@@ -30,10 +31,10 @@ export function ChatPage() {
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
       <AppShell.Main>
-        <MessageView />
+        <MessageView paddingBottom={height} />
       </AppShell.Main>
 
-      <AppShell.Footer>
+      <AppShell.Footer ref={ref}>
         <ChatInput />
       </AppShell.Footer>
     </AppShell>

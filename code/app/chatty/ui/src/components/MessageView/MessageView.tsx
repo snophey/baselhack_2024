@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext, Message as TMessage } from "../../AppContext";
-import { Flex, Text } from "@mantine/core";
+import { Flex, rem, Text } from "@mantine/core";
 
 function Message(msg: TMessage) {
   return (<Flex direction={"column"}>
@@ -20,11 +20,11 @@ function Message(msg: TMessage) {
   </Flex>);
 }
 
-export function MessageView() {
+export function MessageView({ paddingBottom }: {paddingBottom: number}) {
   const { messages } = useContext(AppContext);
 
   return (
-    <Flex direction={"column"} gap={"md"} style={{ height: "100%", overflowY: "auto" }}>
+    <Flex direction={"column"} gap={"md"} style={{ height: "100%", overflowY: "auto", paddingBottom: rem(paddingBottom) }}>
       {messages.map((message) => (
         <Message key={message.id} {...message} />
       ))}
