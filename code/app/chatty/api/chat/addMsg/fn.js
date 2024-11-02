@@ -7,10 +7,9 @@ import message, { addMessage } from "../../db/query/message.js"
  * @type {import("@based/functions").BasedFunction<{messages: string, chatId: string }>}
  */
 export default async (_based, _payload, _ctx) => {
-    console.debug("Add new message")
-    console.log(_ctx.session.id)
+    console.debug("Add new message", "sessionId", _ctx.session.id )
    
-    let chatId;
+    let chatId = _payload.chatId;
     console.log(await sessionExists(_ctx.session.id))
     if(!await sessionExists(_ctx.session.id)) {
       chatId = await createNewChat(_ctx.session.id)

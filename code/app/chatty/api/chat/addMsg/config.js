@@ -5,7 +5,7 @@ import fn from './fn.js'
  * This module exports a default object containing the `hello` function configuration.
  */
 export default {
-    chat: {
+    'chat:addMsg': {
         type: 'function',
         name: 'chat:addMsg',
         fn
