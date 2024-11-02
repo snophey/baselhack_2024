@@ -1,8 +1,8 @@
-import { createNewChat, sessionExists } from "../../db/query/chat.js"
+
 import { addMessage, getAllMessagesByChatId } from "../../db/query/message.js"
+import { createNewChat, sessionExists } from "../../db/query/chat.js"
 import { getSubscriptions } from "../../db/subscription.js"
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 /**
  * Takes an array of messages representing a conversation and returns a response from the AI.
@@ -32,6 +32,7 @@ export default async (_based, _payload, _ctx) => {
     if(!chatId) throw new Error("Failed to create new chat. ")
     const m = await addMessage(chatId, _payload.message, false)
 
+<<<<<<< HEAD
     // get the conversation so far
     const messages =  await getAllMessagesByChatId(chatId);
     const resp = await getAiResponse(messages.map(m => m.message));
@@ -42,5 +43,9 @@ export default async (_based, _payload, _ctx) => {
     getSubscriptions().publish(`${chatId}`)
     console.log(m)
     console.log(chatId)
+=======
+    // getSubscriptions().publish(`${chatId}`)
+    await generateNextMessage(chatId)
+>>>>>>> 04ce64d (lets see)
     return { chatId }
   }

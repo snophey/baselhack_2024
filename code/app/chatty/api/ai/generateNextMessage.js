@@ -1,7 +1,7 @@
 import { pino } from "pino"; // pino: function
 import { createOpenAi } from "./indexer/OpenAi.js"; // createOpenAi: function
 import { createAzureClients } from "./indexer/AzureClients.js"; // createAzureClients: function
-import { getAllMessagesByChatId } from "../db/query/message.js";
+import { addMessage, getAllMessagesByChatId } from "../db/query/message.js";
 import OpenAI from "openai";
 
 
@@ -66,7 +66,7 @@ const openAiChatService = createOpenAi({
 });
 
 
-async function getTopSearchResults(lastMessage) {
+async function getSummarizedTopSearchResults(lastMessage) {
 
     const embeddingResponse = await openAiService.embeddings.create({ // embeddings: function
         model: 'text-embedding-model', // string
@@ -167,11 +167,9 @@ Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegebe
         .concat(messages)
         
 
-    const topResult = await getTopSearchResults(contextMessages[contextMessages.length -1].content)
-    contextMessages.push(topResult)
+    const topResultSum = await getSummarizedTopSearchResults(contextMessages[contextMessages.length -1].content)
+    contextMessages.push(topResultSum)
     
-    console.log("####################33")
-    console.log(topResult)
     
     let result = await openAiChatService.chat.completions.create({
         model: 'gpt-4o',
@@ -183,41 +181,7 @@ Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegebe
     let message = result.choices.map(c => (c.message))
     contextMessages.push(message[0])
     console.log(message) 
-    return
 
-
-
-
-
-    // // // // next system message.. 
-    result = await openAiChatService.chat.completions.create({
-        model: 'gpt-4o',
-        messages: contextMessages,
-        max_tokens: 200,
-        //stream: true // better for realtime and long responses
-    });
-
-    message = result.choices.map(c => (c.message))
-    messages.push(message[0])
-    contextMessages.push(message[0])
-
-    message = {
-        role: 'user',
-        content: `We have ${expireSoon[0]},  ${expireSoon[1]}, and  ${expireSoon[2]} that is expiring soon. Can you give me some deals we can make from these items to attract customers?`
-    };
-    messages.push(message)
-    contextMessages.push(message)
-
-    result = await openAiChatService.chat.completions.create({
-        model: 'gpt-4o',
-        messages: contextMessages,
-        max_tokens: 200,
-        //stream: true // better for realtime and long responses
-    });
-
-    console.log(result)
-    return {
-        messages
-    }
+    await addMessage(chatId, contextMessages.at(-1), true)
 }
 
