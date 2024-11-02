@@ -8,8 +8,6 @@ export default {
     hello: {
         type: 'function',
         public: true,
-        maxPayloadSize: 1e8,
-        uninstallAfterIdleTime: 1e3,
         name: 'hello',
         fn
     }

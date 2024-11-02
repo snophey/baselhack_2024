@@ -2,8 +2,8 @@ import { BasedServer } from '@based/server';
 import sayHello from './api/hello/config.js'
 import dbSet from './api/db/set/config.js'
 import dbGet from './api/db/get/config.js'
-import ui from './ui/config.js'
 import counter from './api/counter/config.js'
+import { closeDatabase } from './api/db/db.js';
 
 /**
  * @param {number} port 
@@ -14,7 +14,6 @@ async function startServer(port) {
     port,
     functions: {
       configs: {
-        ...ui,
         ...sayHello,
         ...counter,
         ...dbGet,
@@ -27,4 +26,10 @@ async function startServer(port) {
   return server;
 }
 
-const server = startServer(8000)
+const server = await startServer(8000)
+process.on('SIGINT', async () => {
+  console.log('Shutting down server');
+  await server.destroy();
+  closeDatabase();
+  process.exit();
+});

@@ -1,35 +1,52 @@
-class DB {
-    x = new Map()
+import sqlite3 from 'sqlite3';
+import os from 'os';
+  
+let db = null;
 
-    /**
-     * 
-     * @param {string} key 
-     * @param {any} value 
-     */
-    set(key, value) {
-        console.debug("db set key ", key, "value", value)
-        return this.x.set(key, value)
-
-    }
-
-    /**
-     * 
-     * @param {string} key 
-     * @returns {any} 
-     */
-    get(key) {
-        console.debug("db get key ", key)
-        return this.x.get(key)
-    }
+const randomFilename = () => {
+  return Math.random().toString(36).substring(7);
 }
 
-const db = new DB()
-export function getDB() {
-    if(!db) {
-        console.error("DB is not initialized. Exiting.")
-        process.exit(1)
-    }
-
-    return db
-
+// sleep for a given number of milliseconds
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export const initDatabase = async () => {
+  const dbPath = process.env.DB_PATH || `${os.tmpdir()}/${randomFilename()}.db`;
+  console.log(`Using database at ${dbPath}`);
+  db = new sqlite3.Database(dbPath);
+  // Create the message table if it doesn't exist
+  db.run(`CREATE TABLE IF NOT EXISTS message (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chat_id INTEGER NOT NULL,
+    message TEXT NOT NULL,
+    is_ai_message BOOLEAN NOT NULL
+  )`);
+
+  // Create the chat table if it doesn't exist
+  db.run(`CREATE TABLE IF NOT EXISTS chat (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    session_id TEXT NOT NULL
+  )`);
+
+  // Wait for the database to be ready
+  await sleep(1000);
+
+  return db;
+}
+
+export const getDatabase = async () => {
+  if (!db) {
+    await initDatabase();
+  }
+  return db;
+}
+
+export const closeDatabase = () => {
+  if (db) {
+    db.close();
+  }
+}
+
+export default getDatabase;
