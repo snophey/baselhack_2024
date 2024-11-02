@@ -2,16 +2,19 @@ import { Textarea, ActionIcon } from "@mantine/core";
 import { useCallback, useContext, useRef, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { PiPaperPlaneBold } from "react-icons/pi";
+import { useRevalidator } from "react-router-dom";
 
 export function ChatInput() {
   const [userInput, setUserInput] = useState("");
   const { onMessageSubmit, sessionId, setMessages, messages } = useContext(AppContext);
+  const { revalidate } = useRevalidator();
 
 
   const submit = useCallback(() => {
     onMessageSubmit(userInput, sessionId);
     setMessages([...messages, { id: messages.length, text: userInput, isAiMessage: false }]);
     setUserInput("");
+    revalidate();
   }, [onMessageSubmit, sessionId, setUserInput, userInput]);
 
   // when the user presses enter inside the textarea, submit the message

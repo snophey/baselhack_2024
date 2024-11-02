@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext, Message as TMessage } from "../../AppContext";
-import { Box, Flex, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 
 function Message(msg: TMessage) {
   return (<Flex direction={"column"}>
@@ -11,6 +11,7 @@ function Message(msg: TMessage) {
       padding: 'var(--mantine-spacing-sm)',
       borderRadius: 'var(--mantine-radius-lg)',
       width: 'fit-content',
+      whiteSpace: 'pre-wrap',
       backgroundColor: !!msg.isAiMessage ? 'var(--mantine-color-grape-1)' : 'var(--mantine-color-lime-1)',
       display: 'inline-block',
     }}>
