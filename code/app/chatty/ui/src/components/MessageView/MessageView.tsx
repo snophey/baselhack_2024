@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext, Message as TMessage } from "../../AppContext";
 import { Flex, rem, Text, useComputedColorScheme } from "@mantine/core";
+import { useParams } from "react-router-dom";
+import { useClient } from "@based/react";
 
 function Message(msg: TMessage) {
   const colorScheme = useComputedColorScheme();
@@ -25,7 +27,21 @@ function Message(msg: TMessage) {
 }
 
 export function MessageView({ paddingBottom }: {paddingBottom: number}) {
-  const { messages } = useContext(AppContext);
+  const { messages, setMessages } = useContext(AppContext);
+  const { chatId } = useParams();
+  const client = useClient();
+
+
+  useEffect(() => {
+    if (chatId) {
+      client.call("chat:getMsgs", { chatId }).then((msgs: TMessage[]) => {
+        setMessages(msgs);
+        console.log(`Got messages for chat ${chatId}`, msgs);
+      }, (err: any) => {
+        console.error(err);
+      });
+    }
+  }, [chatId]);
 
   return (
     <Flex direction={"column"} gap={"md"} style={{ height: "100%", overflowY: "auto", paddingBottom: rem(paddingBottom) }}>
