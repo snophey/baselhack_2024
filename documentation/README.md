@@ -1,13 +1,13 @@
 # ChatAVB (working title)
 
-ChatAVB is a chat application that allows users to "chat" with the AVB (Allgemeine Vertragsbedingungen) of an insurance
-product.
-This solution is meant to help people better understand what they really get when they sign up for a particular insurance
-product.
+ChatAVB is a chat application that allows users to "chat" with the AVB (Allgemeine Vertragsbedingungen) of the PAX insurance
+products. We build upon the stored documents in German which we have extended to be searachble in English expanding the capabilities and attracted more international customers in Basel. 
 
-Oftentimes, people have a specific need in mind when they look for an insurance project (e.g. insure furniture against 
-damage from pets). However, often it is unclear whether the given insurance product actually covers this specific need,
-and it can be difficult to find out. This is where ChatAVB comes in.
+This solution is meant to help people better understand what they really get when they sign up for a particular insurance
+product. You can chat with our friendly chat tool navbär (navigating bear) so you can discover and better understand PAX life insurance products. 
+
+Oftentimes, people have a specific need in mind when they look for life insurance (e.g is it covered by base jumping). However, often it is unclear whether the given insurance product actually covers this specific need,
+and it can be difficult to find out. This is where navbär comes in.
 
 The application helps the user choose the specific product that covers the cases that they want to insure against,
 so that the user does not have to read pages upon pages of legal text to find out if their specific case is covered.
