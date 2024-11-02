@@ -3,6 +3,8 @@ import { AppContext, Message as TMessage } from "../../AppContext";
 import { Flex, rem, Text, useComputedColorScheme } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { useClient } from "@based/react";
+import Markdown from 'react-markdown'
+import classes from './MessageView.module.css';
 
 function Message({ msg }: { msg: TMessage }) {
   const colorScheme = useComputedColorScheme();
@@ -31,7 +33,9 @@ function Message({ msg }: { msg: TMessage }) {
       backgroundColor: speechBubbleColor,
       display: 'inline-block',
     }}>
-      {msg.message}
+      <Markdown className={classes.message}>
+        {msg.message}
+      </Markdown>
     </Text>
   </Flex>);
 }
