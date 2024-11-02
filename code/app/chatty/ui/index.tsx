@@ -4,7 +4,7 @@ import based from '@based/client'
 import { Provider, useQuery } from '@based/react'
 
 export const client = based({
-    host: 'ws://localhost:8000'
+    url: 'ws://localhost:8000'
 })
 
 const App = () => {
@@ -29,7 +29,7 @@ const App = () => {
           fontSize: '20pt',
         }}
       >
-        Hello World! {loading ? '-' : counter}
+        Hello Basel! {loading ? '-' : counter}
       </h2>
     </div>
   )
