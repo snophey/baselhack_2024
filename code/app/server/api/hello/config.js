@@ -10,6 +10,7 @@ export default {
         public: true,
         maxPayloadSize: 1e8,
         uninstallAfterIdleTime: 1e3,
+        name: 'hello',
         fn
     }
 }

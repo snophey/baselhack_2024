@@ -1,0 +1,17 @@
+
+resources:
+- app.yaml
+- ingress.yaml
+
+secretGenerator:
+- name: typesense-api-key
+  options:
+    disableNameSuffixHash: true
+  envs:
+  - typesense.env
+
+commonAnnotations:
+  gitCommit: ${GIT_COMMIT}
+
+commonLabels:
+  appName: ${PROJECT_NAME}
