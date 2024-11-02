@@ -6,7 +6,7 @@ import { MantineProvider } from "@mantine/core";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChatPage } from "./pages/ChatPage";
 import { AppContext } from "./AppContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const router = createBrowserRouter([
   {
@@ -24,12 +24,18 @@ function App() {
   const [x, setX] = useState(0)
   const { data: random, loading: lRandom } = useQuery('db:get', { x })*/
   const [messages, setMessages] = useState([]);
+  const [sessionId, setSessionId] = useState("");
 
+  useEffect(() => {
+    const ssid = localStorage.getItem("sessionId") || crypto.randomUUID();
+    localStorage.setItem("sessionId", ssid);
+    setSessionId(ssid);
+  }, []);
   
   return (
     <>
         <AppContext.Provider value={{
-          sessionId: '',
+          sessionId: sessionId,
           messages,
           setMessages,
           onMessageSubmit: (msg, sessId) => {
