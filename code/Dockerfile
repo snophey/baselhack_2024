@@ -6,7 +6,7 @@ COPY ./app /app
 
 WORKDIR /app/chatty/ui
 RUN npm install
-RUN npm run build:ui
+RUN npm run build
 
 WORKDIR /app
 RUN npm install
