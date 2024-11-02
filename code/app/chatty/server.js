@@ -2,7 +2,7 @@ import { BasedServer } from '@based/server';
 import sayHello from './api/hello/config.js'
 import dbSet from './api/db/set/config.js'
 import dbGet from './api/db/get/config.js'
-import ui from './ui/config.js'
+import ui from './ui2/config.js'
 import counter from './api/counter/config.js'
 
 /**

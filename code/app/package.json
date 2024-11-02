@@ -9,13 +9,21 @@
         "start:server": "node chatty/server.js"
     },
     "dependencies": {
-        "@based/server": "9.1.1",
         "@based/client": "6.11.0",
         "@based/react": "5.2.1",
-        "esbuild": "0.24.0",
+        "@based/server": "9.1.1",
+        "@mantine/core": "^7.13.4",
+        "@mantine/hooks": "^7.13.4",
+        "@mantine/styles": "^6.0.22",
         "@types/react": "^18.0.25",
         "@types/react-dom": "^18.0.9",
+        "esbuild": "0.24.0",
         "react": "18",
         "react-dom": "18"
+    },
+    "devDependencies": {
+        "postcss": "^8.4.47",
+        "postcss-preset-mantine": "^1.17.0",
+        "postcss-simple-vars": "^7.0.1"
     }
 }
