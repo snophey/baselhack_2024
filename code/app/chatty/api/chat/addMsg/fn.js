@@ -1,8 +1,7 @@
 
-import { addMessage, getAllMessagesByChatId } from "../../db/query/message.js"
+import { addMessage } from "../../db/query/message.js"
 import { createNewChat, sessionExists } from "../../db/query/chat.js"
-import { getSubscriptions } from "../../db/subscription.js"
-
+import { generateNextMessage } from './../../ai/generateNextMessage.js'
 
 /**
  * 
