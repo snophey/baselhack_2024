@@ -1,6 +1,8 @@
 import { pino } from "pino"; // pino: function
 import { createOpenAi } from "./indexer/OpenAi.js"; // createOpenAi: function
 import { createAzureClients } from "./indexer/AzureClients.js"; // createAzureClients: function
+import { getAllMessagesByChatId } from "../db/query/message.js";
+import OpenAI from "openai";
 
 
 // Clean document content
@@ -68,13 +70,13 @@ async function getTopSearchResults(lastMessage) {
 
     const embeddingResponse = await openAiService.embeddings.create({ // embeddings: function
         model: 'text-embedding-model', // string
-        input: query, // string
+        input: lastMessage, // string
     });
 
     const embedding = await embeddingResponse.data[0].embedding; // Array<number>
     logger.info("Performing vector-based search using embeddings.");
 
-    const vectorSearchResults = await searchClient.search(query, {
+    const vectorSearchResults = await searchClient.search(lastMessage, {
         top: 10, // number
         vectorSearchOptions: {
             queries: [
@@ -104,8 +106,8 @@ async function getTopSearchResults(lastMessage) {
         // }
     });
 
-    // Log vector search results & Format sources for the RAG prompt
-    const sources = []; // Array<string>
+    let summarizeMessage = "Das sind die top Resultate aus der Vektorsuche. Fasse es kurz und prägnant zusammen, damit wir es in der nächsten suche als System-Nachricht verwenden können. FYI: this was the last user message" 
+    + lastMessage 
     for await (const result of vectorSearchResults.results) {
         //logger.info(`Vector search result from document ${result.document.id}: ${result.document.content}`); // result: object
 
@@ -113,25 +115,47 @@ async function getTopSearchResults(lastMessage) {
         const documentId = result.document.id; // string
         const document = await searchClient.getDocument(documentId); // object
         //logger.info(`Content of document id ${documentId}: ${JSON.stringify(document.content)}`); // document: object
-        const cleanedContent = cleanDocumentContent(document.content); // string
-        sources.push(`${cleanedContent}`); // Array<string>
+        summarizeMessage += cleanDocumentContent(document.content); 
+    }
+
+
+    let result = await openAiChatService.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [{
+            role: 'system',
+            content: summarizeMessage 
+        }],
+        max_tokens: 200,
+        //stream: true // better for realtime and long responses
+    });
+    
+    return {
+        role: 'system',
+        content: result.choices.map(c => (c.message))[0].content
     }
 }
 
 ////
 //////////////////////////7
 
-async function generateNextMessage(chatId) {
-    const messages = payload?.messages || []
+/**
+ * 
+ * @param {{message: string, is_ai_message: 0|1 }[]} messages
+ * @return  
+ */
+function mapMessageToOpenAiMessage(messages) {
+    return messages.map(m => ({ content: m.message, role: m.is_ai_message ? 'assistant' : 'user' }))
+}
 
-    // todo get all messages from db 
+export async function generateNextMessage(chatId) {
 
-    
-    // todo get form db
-    let contextMessages = []
-    let message = {
-        role: 'system',
-        content: `  
+
+    const messages = mapMessageToOpenAiMessage(await getAllMessagesByChatId(chatId))
+
+    let contextMessages = [
+        {
+            role: 'system',
+            content: `  
 Sie sind ein Chat-Assistent, der den Kunden Informationen über Versicherungspolicen gibt. 
 Sie erhalten indizierte Versicherungsdokumente des Versicherers als „Quellen“, die mithilfe der Azure-Ai-Suche indiziert werden. 
 Die Antworten sollten jedoch wahrheitsgemäß sein und mit den angegebenen Quellen übereinstimmen.
@@ -139,9 +163,16 @@ Wenn es nicht genügend Informationen gibt, um zu antworten, sagen Sie, dass Sie
 Beantworten Sie die Anfrage in einer prägnanten, unterhaltsamen und freundlichen Art und Weise. 
 Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegeben sind. Ihre Antwort sollte also auch auf Deutsch sein.
         ` }
-    contextMessages.push(message)
+    ]
+        .concat(messages)
+        
 
-
+    const topResult = await getTopSearchResults(contextMessages[contextMessages.length -1].content)
+    contextMessages.push(topResult)
+    
+    console.log("####################33")
+    console.log(topResult)
+    
     let result = await openAiChatService.chat.completions.create({
         model: 'gpt-4o',
         messages: contextMessages,
@@ -149,14 +180,14 @@ Denken Sie daran, dass die Anfrage und die Quellen in deutscher Sprache angegebe
         //stream: true // better for realtime and long responses
     });
 
-    message = result.choices.map(c => (c.message))
+    let message = result.choices.map(c => (c.message))
     contextMessages.push(message[0])
+    console.log(message) 
+    return
 
-    message = {
-        role: 'system',
-        content: `Can you create a nice welcome message for the user? Start it with "Hi, I'm your AI assistant, here to help you find creative ways to minimize food waste"`
-    };
-    contextMessages.push(message)
+
+
+
 
     // // // // next system message.. 
     result = await openAiChatService.chat.completions.create({
