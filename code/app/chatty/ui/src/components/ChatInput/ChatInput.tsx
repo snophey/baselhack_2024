@@ -16,7 +16,6 @@ export function ChatInput() {
 
   const submit = useCallback(async() => {
     onMessageSubmit(userInput, chatId ? parseInt(chatId) : null, sessionId);
-    setMessages([...messages, { id: messages.length, text: userInput, isAiMessage: false }]);
     setUserInput("");
     revalidate();
     const { chatId: newChatId } = await client.call("chat:addMsg", { msg: userInput, chatId: chatId ? parseInt(chatId) : null });
