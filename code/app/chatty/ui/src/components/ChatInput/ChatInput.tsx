@@ -19,7 +19,7 @@ export function ChatInput() {
 
   // when the user presses enter inside the textarea, submit the message
   const handleKeyDown = useCallback((e: any) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && userInput.trim().length > 0) {
       e.preventDefault();
       submit();
     }
