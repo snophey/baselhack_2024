@@ -1,6 +1,6 @@
 {
     "name": "hack",
-    "type":"module" ,
+    "type": "module",
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
@@ -8,7 +8,12 @@
     },
     "dependencies": {
         "@based/server": "9.1.1",
-        "esbuild": "0.24.0"
+        "@based/client": "6.11.0",
+        "@based/react": "5.2.1",
+        "esbuild": "0.24.0",
+        "@types/react": "^18.0.25",
+        "@types/react-dom": "^18.0.9",
+        "react": "18",
+        "react-dom": "18"
     }
-    
 }
