@@ -8,4 +8,4 @@ WORKDIR /app
 # Install the dependencies
 RUN npm install
 
-CMD ["server/main.js"]
+CMD ["chatty/server.js"]
