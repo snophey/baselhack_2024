@@ -11,12 +11,12 @@ export { createAzureClients }; // createAzureClients: function
 
 // Azure Search and OpenAI credentials
 const searchEndpoint = "https://klary-dev-ai.search.windows.net"; // string
-const searchApiKey = ""; // string
+const searchApiKey = process.env.SEARCH_API_KEY ; // string
 
 const openaiEmbeddingsEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15"; // string
 const embeddingModelName = "text-embedding-ada-002"; // string
 const openaiChatEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"; // string
-const openaiApiKey = ""; // string
+const openaiApiKey = process.env.OPENAI_API_KEY; // string
 const deployment = "klary-dev-ai"; // string
 
 const apiVersion = "2024-05-01-preview"; // string
@@ -115,11 +115,7 @@ for (const file of txtFiles) {
 logger.info("Indexing of all text files completed.");
 
 // Now perform search using Azure Search directly
-const searchClient = createAzureClients(searchEndpoint, searchApiKey).search({ // search: function
-    id: String, // string
-    content: String, // string
-    embedding: Array // number[]
-})(indexName); // indexName: string
+const searchClient = createAzureClients(searchEndpoint, searchApiKey).search(indexName); // indexName: string
 
 // Define a search query
 // const query = "Wie lange ist die minimal Versicherungsdauer für die PAX-Todesfallversicherung?";
