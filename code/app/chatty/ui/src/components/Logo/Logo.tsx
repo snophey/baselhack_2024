@@ -1,6 +1,6 @@
 import { Flex, Image } from "@mantine/core";
 // import SVG
-import logo from "../../assets/navbar.svg";
+import logo from "../../assets/navbar_long_logo_flipped.svg";
 import { Link } from "react-router-dom";
 
 export function Logo({ width, height }: { width: number; height: number }) {

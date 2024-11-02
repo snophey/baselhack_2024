@@ -1,8 +1,12 @@
 import { useContext } from "react";
 import { AppContext, Message as TMessage } from "../../AppContext";
-import { Flex, rem, Text } from "@mantine/core";
+import { Flex, rem, Text, useComputedColorScheme } from "@mantine/core";
 
 function Message(msg: TMessage) {
+  const colorScheme = useComputedColorScheme();
+
+  const speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-gray-1)';
+
   return (<Flex direction={"column"}>
     <Text style={{
       fontWeight: 'bold',
@@ -12,7 +16,7 @@ function Message(msg: TMessage) {
       borderRadius: 'var(--mantine-radius-lg)',
       width: 'fit-content',
       whiteSpace: 'pre-wrap',
-      backgroundColor: !!msg.isAiMessage ? 'var(--mantine-color-grape-1)' : 'var(--mantine-color-lime-1)',
+      backgroundColor: speechBubbleColor,
       display: 'inline-block',
     }}>
       {msg.text}

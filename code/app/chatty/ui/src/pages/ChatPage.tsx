@@ -1,14 +1,16 @@
 
-import { AppShell, Box, Burger } from '@mantine/core'
-import { useDisclosure, useElementSize } from '@mantine/hooks';
+import { ActionIcon, AppShell, Box, Burger, em } from '@mantine/core'
+import { useDisclosure, useElementSize, useMediaQuery } from '@mantine/hooks';
 import { ChatInput } from '../components/ChatInput/ChatInput';
 import { MessageView } from '../components/MessageView/MessageView';
 import { Logo } from '../components/Logo/Logo';
+import ColorModeToggle from '../components/ColorModeToggle/ColorModeToggle';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
   const { ref, height } = useElementSize();
   const { ref: logoRef, height: logoHeight, width: logoWidth } = useElementSize();
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   return (
     <AppShell
@@ -22,6 +24,7 @@ export function ChatPage() {
     >
       <AppShell.Header display={"flex"} px='md' py='xs' style={{
         flexDirection: 'row',
+        justifyContent: 'space-between',
       }}>
         <Burger
           opened={opened}
@@ -32,6 +35,7 @@ export function ChatPage() {
         <Box ref={logoRef}>
           <Logo width={logoWidth} height={logoHeight} />
         </Box>
+        <ColorModeToggle />
       </AppShell.Header>
 
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
