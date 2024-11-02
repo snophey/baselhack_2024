@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 export type Message = {
   id: number;
-  text: string;
+  message: string;
   isAiMessage: boolean;
 }
 

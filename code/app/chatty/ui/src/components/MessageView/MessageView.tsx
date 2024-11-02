@@ -4,10 +4,12 @@ import { Flex, rem, Text, useComputedColorScheme } from "@mantine/core";
 import { useParams } from "react-router-dom";
 import { useClient } from "@based/react";
 
-function Message(msg: TMessage) {
+function Message({ msg }: { msg: TMessage }) {
   const colorScheme = useComputedColorScheme();
 
   const speechBubbleColor = colorScheme === 'dark' ? 'var(--mantine-color-gray-8)' : 'var(--mantine-color-gray-1)';
+
+  console.log(`Message: ${JSON.stringify(msg)}`);
 
   return (<Flex direction={"column"}>
     <Text style={{
@@ -21,7 +23,7 @@ function Message(msg: TMessage) {
       backgroundColor: speechBubbleColor,
       display: 'inline-block',
     }}>
-      {msg.text}
+      {msg.message}
     </Text>
   </Flex>);
 }
@@ -46,7 +48,7 @@ export function MessageView({ paddingBottom }: {paddingBottom: number}) {
   return (
     <Flex direction={"column"} gap={"md"} style={{ height: "100%", overflowY: "auto", paddingBottom: rem(paddingBottom) }}>
       {messages.map((message) => (
-        <Message key={message.id} {...message} />
+        <Message key={message.id} msg={message} />
       ))}
     </Flex>
   )

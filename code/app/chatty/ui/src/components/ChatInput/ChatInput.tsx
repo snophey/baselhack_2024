@@ -1,6 +1,6 @@
 import { Textarea, ActionIcon } from "@mantine/core";
 import { useCallback, useContext, useState } from "react";
-import { AppContext } from "../../AppContext";
+import { AppContext, Message } from "../../AppContext";
 import { PiPaperPlaneBold } from "react-icons/pi";
 import { useNavigate, useParams, useRevalidator } from "react-router-dom";
 import { useClient } from "@based/react";
@@ -18,8 +18,15 @@ export function ChatInput() {
     onMessageSubmit(userInput, chatId ? parseInt(chatId) : null, sessionId);
     setUserInput("");
     revalidate();
-    const { chatId: newChatId } = await client.call("chat:addMsg", { msg: userInput, chatId: chatId ? parseInt(chatId) : null });
+    const { chatId: newChatId } = await client.call("chat:addMsg", { message: userInput, chatId: chatId ? parseInt(chatId) : null });
     navigate(`/${newChatId}`);
+
+    client.call("chat:getMsgs", { chatId }).then((msgs: Message[]) => {
+      setMessages(msgs);
+      console.log(`Got messages for chat ${chatId}`, msgs);
+    }, (err: any) => {
+      console.error(err);
+    });
   }, [onMessageSubmit, sessionId, setUserInput, userInput]);
 
   // when the user presses enter inside the textarea, submit the message
