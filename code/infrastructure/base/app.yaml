@@ -51,7 +51,7 @@ spec:
             - name: BASE_URL
               value: ${PROJECT_NAME}-${ENVIRONMENT}.rovner.ch
             - name: DB_PATH
-              value: /usr/share/app/data
+              value: /usr/share/app/data/db.sqlite
           ports:
             - containerPort: 8000
               name: http
