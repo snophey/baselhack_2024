@@ -6,7 +6,7 @@ export type Message = {
   isAiMessage: boolean;
 }
 
-export type onMessageSubmit = (message: string, sessionId: string) => void;
+export type onMessageSubmit = (message: string, chatId: number | null, sessionId: string) => void;
 
 export type AppContext = {
   sessionId: string;

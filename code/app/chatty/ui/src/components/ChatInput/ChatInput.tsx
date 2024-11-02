@@ -1,17 +1,18 @@
 import { Textarea, ActionIcon } from "@mantine/core";
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AppContext } from "../../AppContext";
 import { PiPaperPlaneBold } from "react-icons/pi";
-import { useRevalidator } from "react-router-dom";
+import { useParams, useRevalidator } from "react-router-dom";
+import classes from "./ChatInput.module.css";
 
 export function ChatInput() {
   const [userInput, setUserInput] = useState("");
   const { onMessageSubmit, sessionId, setMessages, messages } = useContext(AppContext);
   const { revalidate } = useRevalidator();
-
+  const { chatId } = useParams();
 
   const submit = useCallback(() => {
-    onMessageSubmit(userInput, sessionId);
+    onMessageSubmit(userInput, chatId ? parseInt(chatId) : null, sessionId);
     setMessages([...messages, { id: messages.length, text: userInput, isAiMessage: false }]);
     setUserInput("");
     revalidate();
@@ -19,9 +20,13 @@ export function ChatInput() {
 
   // when the user presses enter inside the textarea, submit the message
   const handleKeyDown = useCallback((e: any) => {
-    if (e.key === "Enter" && !e.shiftKey && userInput.trim().length > 0) {
-      e.preventDefault();
-      submit();
+    if (e.key === "Enter" && !e.shiftKey) {
+      if (!e.shiftKey) { // if shift is not pressed, then we are trying to submit the message
+        if ( userInput.trim().length > 0) {
+          submit();
+        }
+        e.preventDefault();
+      }
     }
   }, [submit]);
 
@@ -34,8 +39,9 @@ export function ChatInput() {
       rows={userInput.split("\n").length}
       placeholder="Type your message"
       m="md"
-      radius="md"
+      radius="lg"
       size="lg"
+      className={classes.classInput}
       variant="filled"
       onKeyDown={handleKeyDown}
       value={userInput}

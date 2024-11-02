@@ -34,7 +34,7 @@ export function ChatPage() {
         <MessageView paddingBottom={height} />
       </AppShell.Main>
 
-      <AppShell.Footer ref={ref}>
+      <AppShell.Footer ref={ref} withBorder={false}>
         <ChatInput />
       </AppShell.Footer>
     </AppShell>
