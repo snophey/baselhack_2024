@@ -4,7 +4,7 @@ import based from '@based/client'
 import { Provider, useQuery } from '@based/react'
 
 export const client = based({
-    host: 'ws://localhost:8000'
+    url: 'ws://localhost:8000'
 })
 
 const App = () => {
