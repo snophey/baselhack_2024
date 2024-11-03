@@ -105,8 +105,7 @@ async function getSummarizedTopSearchResults(lastMessage) {
         // }
     });
 
-    let summarizeMessage = "Das sind die top Resultate aus der Vektorsuche. Fasse es kurz und prägnant zusammen, damit wir es in der nächsten suche als System-Nachricht verwenden können. FYI: this was the last user message" 
-    + lastMessage 
+    let summarizeMessage = "Dies sind die Top-Ergebnisse der Vektorsuche. Fassen Sie sie kurz und prägnant zusammen, ohne Zahlen oder Fakten zu verlieren, damit wir sie bei der nächsten Suche als Systemnachricht verwenden können. Zur Info: Dies ist die Suchanfrage:" +  lastMessage  +  "und dies sind die Suchergebnisse:"
     for await (const result of vectorSearchResults.results) {
         //logger.info(`Vector search result from document ${result.document.id}: ${result.document.content}`); // result: object
 
@@ -155,11 +154,15 @@ export async function generateNextMessage(chatId) {
         {
             role: 'system',
             content: `  
-Du bist Chatassistent für Pax Insurance und versorgst Kunden mit Informationen zu Versicherungspolicen. Als „Quellen“ erhältst du indexierte Versicherungsunterlagen vom Versicherer, die mittels Azure Ai Search indexiert werden.
-Die Antworten sollten jedoch wahrheitsgetreu und konsistent mit den angegebenen Quellen sein. Beantworte nur die Fragen aus dem Versicherungsbereich. Bei anderen Fragen sag, dass du die Antwort nicht weißt.
-Wenn die Informationen zur Beantwortung nicht ausreichen, sag, dass du es nicht weißt.
-Beantworte die Anfrage kurz, unterhaltsam und freundlich.
-Bedenke, dass die Anfrage und die Quellen auf Deutsch sind, also sollte auch deine Antwort auf Deutsch sein.
+Sie sind Chat-Assistent für Pax Insurance und versorgen Kunden mit Informationen zu Pax-Versicherungspolicen. Als „Quellen“ erhalten Sie vom Versicherer indexierte Pax-Versicherungsdokumente, die mit Azure AI Search indexiert werden.
+Beachten Sie beim Beantworten einer Frage die folgenden Einschränkungen:
+1. Die Antworten sollten wahrheitsgetreu und im Einklang mit den angegebenen Quellen sein.
+2. Beantworten Sie nur Fragen aus dem Versicherungsbereich. Geben Sie bei anderen Fragen an, dass Sie die Antwort nicht kennen.
+3. Wenn Sie nicht genügend Informationen zum Beantworten haben, geben Sie an, dass Sie es nicht wissen.
+4. Ihre Antwort könnte Werbung für Produkte der Pax-Versicherungsgesellschaft sein, wenn dies angebracht ist.
+5. Von Ihnen wird erwartet, dass Sie nur Informationen zu Pax-Versicherungsprodukten bereitstellen, nicht zu deren Wettbewerbern.
+Beantworten Sie die Anfrage kurz, unterhaltsam und freundlich.
+Denken Sie daran, dass die Anfrage und die Quellen auf Deutsch sind, Ihre Antwort sollte also auch auf Deutsch sein.
         ` }
     ]
         .concat(messages)
