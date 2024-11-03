@@ -1,0 +1,27 @@
+ffmpeg
+ffmpeg-python
+python-dotenv
+# gradio_client
+# gradio
+openai
+tiktoken
+tinydb
+tinymongo
+proglog
+yt-dlp
+torch
+torchaudio
+### whisper timestamped 
+whisper-timestamped
+protobuf
+pillow==11
+moviepy
+#because of known bug opencv is needed
+opencv-python
+progress
+questionary
+edge-tts
+# TTS
+flask
+PyYAML
+pandas
