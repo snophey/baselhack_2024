@@ -14,9 +14,9 @@ so that the user does not have to read pages upon pages of legal text to find ou
 
 ## Autobrainrot
 
-We are building on top of [ShortGPT](https://github.com/RayVentura/ShortGPT). The repository was pulled the entire repository in order to edit the code and to run it locally.  
+We are building on top of [ShortGPT](https://github.com/RayVentura/ShortGPT). The repository was added locally since it had some key differences in order to run it locally. 
 
-User needs to copy the entire [shortGPT folder](https://github.com/RayVentura/ShortGPT/tree/stable/shortGPT) into the ./autobrainrot/videoGeneration/shortGPT. Then you should be able to run it as expected. 
+User needs to copy the entire [shortGPT folder](https://github.com/RayVentura/ShortGPT/tree/stable/shortGPT) into the ./autobrainrot/videoGeneration/shortGPT. Then you should be able to run it as expected. The below are the commands to do it in bash or can be done manually by the user. 
 
 ```bash
 cd ./autobrainrot/videoGeneration/
@@ -39,6 +39,8 @@ mv shortGPT ../
 cd ..
 rm -rf ShortGPT
 ```
+
+There are a few changes we had to make to the files in order it to work. Please contact Kevin Yar for those details. 
 
 ## How to run it
 The application is continuously built and deployed to our Kubernetes cluster. The staging environment is available at
