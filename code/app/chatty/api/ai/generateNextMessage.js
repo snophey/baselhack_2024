@@ -146,7 +146,7 @@ function getToneSnippet(tone) {
  * @param {{message: string, is_ai_message: 0|1 }[]} messages
  * @return  
  */
-function mapMessageToOpenAiMessage(messages) {
+export function mapMessageToOpenAiMessage(messages) {
     return messages.map(m => ({ content: m.message, role: m.is_ai_message ? 'assistant' : 'user' }))
 }
 
