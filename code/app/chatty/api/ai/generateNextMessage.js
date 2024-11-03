@@ -1,12 +1,10 @@
-import { pino } from "pino"; // pino: function
-import { createOpenAi } from "./indexer/OpenAi.js"; // createOpenAi: function
-import { createAzureClients } from "./indexer/AzureClients.js"; // createAzureClients: function
+import { pino } from "pino"; 
+import { createOpenAi } from "./indexer/OpenAi.js";
+import { createAzureClients } from "./indexer/AzureClients.js";
 import { addMessage, getAllMessagesByChatId } from "../db/query/message.js";
-import OpenAI from "openai";
-
 
 // Clean document content
-const cleanDocumentContent = (content) => { // content: string => string
+const cleanDocumentContent = (content) => { 
     // Remove reference blocks like [19][20] if there are any
     let cleanedContent = content.replace(/\[\d+\]/g, '');
 
@@ -19,99 +17,91 @@ const cleanDocumentContent = (content) => { // content: string => string
     // Trim any extra leading or trailing spaces
     cleanedContent = cleanedContent.trim();
 
-    return cleanedContent; // returns: string
+    return cleanedContent; 
 };
 
-
-
-////////////////////////
-///
-
 // Azure Search and OpenAI credentials
-const searchEndpoint = "https://klary-dev-ai.search.windows.net"; // string
-const searchApiKey = process.env.SEARCH_API_KEY; // string
+const searchEndpoint = "https://klary-dev-ai.search.windows.net"; 
+const searchApiKey = process.env.SEARCH_API_KEY; 
+const openaiEmbeddingsEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15"; 
+const openaiChatEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"; 
+const openaiApiKey = process.env.OPENAI_API_KEY; 
+const deployment = "klary-dev-ai"; 
 
-const openaiEmbeddingsEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15"; // string
-const openaiChatEndpoint = "https://klary-dev-openai.cognitiveservices.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-08-01-preview"; // string
-const openaiApiKey = process.env.OPENAI_API_KEY; // string
-const deployment = "klary-dev-ai"; // string
+const apiVersion = "2024-05-01-preview"; 
 
-const apiVersion = "2024-05-01-preview"; // string
-
-const indexName = "pax2-index"; // string
+const indexName = "pax2-index"; 
 
 const logger = pino({
     level: 'debug', // Set the log level (e.g., 'debug', 'info', 'warn', 'error')
-}); // logger: object
-
+}); 
 
 
 // Now perform search using Azure Search directly
-const searchClient = createAzureClients(searchEndpoint, searchApiKey).search(indexName); // indexName: string
-
+const searchClient = createAzureClients(searchEndpoint, searchApiKey).search(indexName); 
 
 const openAiService = createOpenAi({
-    deployment, // string
-    endpoint: openaiEmbeddingsEndpoint, // string
-    apiKey: openaiApiKey, // string
-    apiVersion // string
+    deployment, 
+    endpoint: openaiEmbeddingsEndpoint, 
+    apiKey: openaiApiKey, 
+    apiVersion 
 });
 
 const openAiChatService = createOpenAi({
-    deployment, // string
-    endpoint: openaiChatEndpoint, // string
-    apiKey: openaiApiKey, // string
-    apiVersion // string
+    deployment, 
+    endpoint: openaiChatEndpoint, 
+    apiKey: openaiApiKey, 
+    apiVersion 
 });
 
 
 async function getSummarizedTopSearchResults(lastMessage) {
 
-    const embeddingResponse = await openAiService.embeddings.create({ // embeddings: function
-        model: 'text-embedding-model', // string
-        input: lastMessage, // string
+    const embeddingResponse = await openAiService.embeddings.create({ 
+        model: 'text-embedding-model', 
+        input: lastMessage, 
     });
 
-    const embedding = await embeddingResponse.data[0].embedding; // Array<number>
+    const embedding = await embeddingResponse.data[0].embedding; 
     logger.info("Performing vector-based search using embeddings.");
 
     const vectorSearchResults = await searchClient.search(lastMessage, {
-        top: 10, // number
+        top: 10, 
         vectorSearchOptions: {
             queries: [
                 {
-                    kind: 'vector', // string
-                    vector: embedding, // Array<number>
-                    kNearestNeighborsCount: 10, // number
-                    fields: ['embedding'] // Array<string>
+                    kind: 'vector', 
+                    vector: embedding, 
+                    kNearestNeighborsCount: 10, 
+                    fields: ['embedding'] 
                 },
             ],
-            filterMode: 'preFilter' // string
+            filterMode: 'preFilter' 
         },
 
         // ENABLE SEMANTIC RANKING
-        // queryType: 'semantic', // string
+        // queryType: 'semantic', 
         // semanticSearchOptions: {
         //     answers: {
-        //         answerType: "extractive", // string
+        //         answerType: "extractive", 
         //         count: 1, // number
-        //         threshold: 0.7 // number
+        //         threshold: 0.7 
         //     },
         //     captions: {
-        //         captionType: "extractive", // string
-        //         highlight: true, // boolean
+        //         captionType: "extractive", 
+        //         highlight: true, 
         //     },
-        //     configurationName: 'default' // string
+        //     configurationName: 'default' 
         // }
     });
 
-    let summarizeMessage = "Dies sind die Top-Ergebnisse der Vektorsuche. Fassen Sie sie kurz und prägnant zusammen, ohne Zahlen oder Fakten zu verlieren, damit wir sie bei der nächsten Suche als Systemnachricht verwenden können. Zur Info: Dies ist die Suchanfrage:" +  lastMessage  +  "und dies sind die Suchergebnisse:"
+    let summarizeMessage = "Dies sind die Top-Ergebnisse der Vektorsuche. Fassen wir sie kurz und prägnant zusammen, ohne dabei Zahlen oder wichtige Fakten wie Produktnamen zu verlieren, damit wir sie bei der nächsten Suche als Systemnachricht verwenden können. Zur Info: Dies ist die Suchanfrage:" + lastMessage + "und dies sind die Suchergebnisse:"
     for await (const result of vectorSearchResults.results) {
         //logger.info(`Vector search result from document ${result.document.id}: ${result.document.content}`); // result: object
 
         // Log the complete document
-        const documentId = result.document.id; // string
-        const document = await searchClient.getDocument(documentId); // object
+        const documentId = result.document.id;
+        const document = await searchClient.getDocument(documentId); 
         //logger.info(`Content of document id ${documentId}: ${JSON.stringify(document.content)}`); // document: object
         summarizeMessage += cleanDocumentContent(document.content); 
     }
@@ -133,8 +123,6 @@ async function getSummarizedTopSearchResults(lastMessage) {
     }
 }
 
-////
-//////////////////////////7
 
 /**
  * 
