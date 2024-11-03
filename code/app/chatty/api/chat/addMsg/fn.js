@@ -9,6 +9,7 @@ import { generateNextMessage } from './../../ai/generateNextMessage.js'
  */
 export default async (_based, _payload, _ctx) => {
     console.debug("Add new message", "sessionId", _ctx.session.authState.token )
+    console.log("The user wants to be talked to using tone: ", _payload.tone ?? "neutral")
    
     let chatId = _payload.chatId != null ? parseInt(_payload.chatId) : null;
     console.log(`Received chatId from the client: ${chatId}`)

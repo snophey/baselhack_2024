@@ -1,12 +1,13 @@
 
-import { ActionIcon, AppShell, Box, Burger, em } from '@mantine/core'
-import { useDisclosure, useElementSize, useMediaQuery } from '@mantine/hooks';
+import { AppShell, Box, Burger } from '@mantine/core'
+import { useDisclosure, useElementSize } from '@mantine/hooks';
 import { ChatInput } from '../components/ChatInput/ChatInput';
 import { MessageView } from '../components/MessageView/MessageView';
 import { Logo } from '../components/Logo/Logo';
 import ColorModeToggle from '../components/ColorModeToggle/ColorModeToggle';
 import { useParams } from 'react-router-dom';
 import { Hero } from '../components/Hero/Hero';
+import { ChatConfig } from '../components/ChatConfig/ChatConfig';
 
 export function ChatPage() {
   const [opened, { toggle }] = useDisclosure();
@@ -40,7 +41,9 @@ export function ChatPage() {
         <ColorModeToggle />
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+      <AppShell.Navbar p="md">
+        <ChatConfig />
+      </AppShell.Navbar>
 
       <AppShell.Main>
         {

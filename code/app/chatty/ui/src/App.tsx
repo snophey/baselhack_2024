@@ -44,7 +44,7 @@ function App() {
           setMessages,
           onMessageSubmit: (msg, sessId) => {
             console.log(`User ${sessId} sent message: ${msg}`);
-          }
+          },
         }}>
       <MantineProvider>
           <RouterProvider router={router} />

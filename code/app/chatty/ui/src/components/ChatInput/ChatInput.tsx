@@ -1,14 +1,16 @@
 import { Textarea, ActionIcon } from "@mantine/core";
 import { useCallback, useContext, useState } from "react";
-import { AppContext, Message } from "../../AppContext";
+import { AppContext, Message, TONE_NEUTRAL, toneAtom } from "../../AppContext";
 import { PiPaperPlaneBold } from "react-icons/pi";
 import { useNavigate, useParams, useRevalidator } from "react-router-dom";
 import { useClient } from "@based/react";
 import { useDisclosure } from "@mantine/hooks";
+import { useAtom } from "jotai";
 
 export function ChatInput() {
   const [userInput, setUserInput] = useState("");
   const { onMessageSubmit, sessionId, setMessages, messages } = useContext(AppContext);
+  const [tone] = useAtom(toneAtom);
   const { revalidate } = useRevalidator();
   const { chatId } = useParams();
   const navigate = useNavigate();
@@ -33,7 +35,11 @@ export function ChatInput() {
 
     startLoading();
     try {
-      const { chatId: newChatId } = await client.call("chat:addMsg", { message: userInput, chatId: chatId ? parseInt(chatId) : null });
+      const { chatId: newChatId } = await client.call("chat:addMsg", {
+        message: userInput,
+        chatId: chatId ? parseInt(chatId) : null,
+        tone: tone ?? TONE_NEUTRAL,
+      });
       navigate(`/${newChatId}`);
     } catch (e) {
       console.error(e);

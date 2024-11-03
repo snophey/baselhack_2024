@@ -1,3 +1,4 @@
+import { atom } from "jotai";
 import { createContext } from "react";
 
 export type Message = {
@@ -5,6 +6,11 @@ export type Message = {
   message: string;
   is_ai_message: number;
 }
+
+export const TONE_NEUTRAL = 'neutral';
+export const TONE_CASUAL = 'casual';
+export const TONE_CHILD = 'child';
+export const TONE_FORMAL = 'formal';
 
 export type onMessageSubmit = (message: string, chatId: number | null, sessionId: string) => void;
 
@@ -22,3 +28,5 @@ export const AppContext = createContext<AppContext>({
   setMessages: () => {},
   onMessageSubmit: () => {},
 });
+
+export const toneAtom = atom<string>(TONE_NEUTRAL);
