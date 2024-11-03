@@ -10,9 +10,10 @@ import { generateNextMessage } from './../../ai/generateNextMessage.js'
 export default async (_based, _payload, _ctx) => {
     console.debug("Add new message", "sessionId", _ctx.session.authState.token )
    
-    let chatId = _payload.chatId;
+    let chatId = _payload.chatId != null ? parseInt(_payload.chatId) : null;
+    console.log(`Received chatId from the client: ${chatId}`)
     console.log(await sessionExists(_ctx.session.authState.token))
-    if(!await sessionExists(_ctx.session.authState.token)) {
+    if(!await sessionExists(_ctx.session.authState.token) || !chatId) {
       chatId = await createNewChat(_ctx.session.authState.token)
     }
    
