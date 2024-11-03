@@ -20,18 +20,17 @@ const router = createBrowserRouter([
   },
 ]);
 
+const ssid = localStorage.getItem("sessionId") || crypto.randomUUID();
+localStorage.setItem("sessionId", ssid);
+
 function App() {
   /*const { data: counter, loading } = useQuery('counter')
   const [x, setX] = useState(0)
   const { data: random, loading: lRandom } = useQuery('db:get', { x })*/
   const [messages, setMessages] = useState([]);
-  const [sessionId, setSessionId] = useState("");
   const client = useClient()
 
   useEffect(() => {
-    const ssid = localStorage.getItem("sessionId") || crypto.randomUUID();
-    localStorage.setItem("sessionId", ssid);
-    setSessionId(ssid);
     client.setAuthState({
       token: ssid
     })
@@ -40,7 +39,7 @@ function App() {
   return (
     <>
         <AppContext.Provider value={{
-          sessionId: sessionId,
+          sessionId: ssid,
           messages,
           setMessages,
           onMessageSubmit: (msg, sessId) => {
