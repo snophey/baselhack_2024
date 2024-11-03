@@ -187,7 +187,20 @@ Denken Sie daran, dass die Anfrage und die Quellen auf Deutsch sind, Ihre Antwor
     const isReady = await isReadyToProposeRedirect(contextMessages)
     console.log(isReady)
     if(isReady) {
-        await addMessage(chatId, "lets gooo!!!!", true)
+
+    let result = await openAiChatService.chat.completions.create({
+        model: 'gpt-4o',
+        messages: contextMessages,
+        max_tokens: 200,
+        //stream: true // better for realtime and long responses
+    });
+
+    let message = result.choices.map(c => (c.message))
+    contextMessages.push(message[0])
+    console.log(message) 
+
+    await addMessage(chatId, contextMessages.at(-1).content + "\n Berechne deine Prämie hier unter https://pax.ch", true)
+
         return 
     }
     ////
