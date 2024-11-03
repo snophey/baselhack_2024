@@ -24,8 +24,8 @@ function Message({ msg }: { msg: TMessage }) {
   }}>
     <Text style={{
       fontWeight: 'bold',
-    }} size={'sm'}>{!!msg.is_ai_message ? 'ChatAVB' : 'You'}</Text>
-    <Text size={'md'} style={{
+    }} size={'sm'}>{!!msg.is_ai_message ? 'NAVBÄR' : 'Du'}</Text>
+    <Text component="div" size={'md'} style={{
       padding: 'var(--mantine-spacing-sm)',
       borderRadius: 'var(--mantine-radius-lg)',
       width: 'fit-content',
