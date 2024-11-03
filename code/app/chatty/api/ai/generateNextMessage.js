@@ -113,13 +113,30 @@ async function getSummarizedTopSearchResults(lastMessage) {
             role: 'system',
             content: summarizeMessage 
         }],
-        max_tokens: 200,
+        max_tokens: 300,
         //stream: true // better for realtime and long responses
     });
     
     return {
         role: 'system',
         content: result.choices.map(c => (c.message))[0].content
+    }
+}
+
+const TONE_NEUTRAL = 'neutral';
+const TONE_CASUAL = 'casual';
+const TONE_CHILD = 'child';
+const TONE_FORMAL = 'formal';
+
+function getToneSnippet(tone) {
+    if (tone === TONE_CHILD) {
+        return "Der Benutzer ist ein Kind. Bitte antworten Sie in sehr einfacher Sprache und machen Sie viele Beispiele."
+    } else if (tone === TONE_FORMAL) {
+        return "Der Benutzer ist ein Erwachsener Akademiker. Bitte antworten Sie in formeller Sprache und seien Sie sehr respektvoll."
+    } else if (tone === TONE_CASUAL) {
+        return "Der Benutzer ist guter Kumpel von Ihnen. Bitte antworten Sie in informeller Sprache und verwenden Sie viele Emojis."
+    } else {
+        return "Der Benutzer ist ein Erwachsener. Bitte antworten Sie in neutraler Sprache und seien Sie professionell."
     }
 }
 
@@ -133,7 +150,7 @@ function mapMessageToOpenAiMessage(messages) {
     return messages.map(m => ({ content: m.message, role: m.is_ai_message ? 'assistant' : 'user' }))
 }
 
-export async function generateNextMessage(chatId) {
+export async function generateNextMessage(chatId, tone) {
 
 
     const messages = mapMessageToOpenAiMessage(await getAllMessagesByChatId(chatId))
@@ -141,8 +158,17 @@ export async function generateNextMessage(chatId) {
     let contextMessages = [
         {
             role: 'system',
-            content: `  
-Sie sind Chat-Assistent für Pax Insurance und versorgen Kunden mit Informationen zu Pax-Versicherungspolicen. Als „Quellen“ erhalten Sie vom Versicherer indexierte Pax-Versicherungsdokumente, die mit Azure AI Search indexiert werden.
+            content: `
+Policies:
+- PAX Insurance soll nicht mit PAX Americana Recording Company (PAX-AM) verwechselt werden. Das sind zwei verschiedene Unternehmen.
+- Beziehe dich nur auf PAX Insurance, wenn du über Versicherungen sprichst.
+- Verwende nur offizielle Dokumente von PAX Insurance als Quellen.
+- Kommt eine Frage nicht in Deutsch, gib an, dass du nur Deutsch verstehst.
+- Antworte nur in ganzen Sätzen.
+${tone === TONE_NEUTRAL ? '' : '-' + getToneSnippet(tone)}
+
+Sie sind Chat-Assistent für Pax Insurance und versorgen Kunden mit Informationen zu Pax-Versicherungspolicen.
+Als „Quellen“ erhalten Sie vom Versicherer indexierte Pax-Versicherungsdokumente, die mit Azure AI Search indexiert werden.
 Beachten Sie beim Beantworten einer Frage die folgenden Einschränkungen:
 1. Die Antworten sollten wahrheitsgetreu und im Einklang mit den angegebenen Quellen sein.
 2. Beantworten Sie nur Fragen aus dem Versicherungsbereich. Geben Sie bei anderen Fragen an, dass Sie die Antwort nicht kennen.
@@ -151,7 +177,7 @@ Beachten Sie beim Beantworten einer Frage die folgenden Einschränkungen:
 5. Von Ihnen wird erwartet, dass Sie nur Informationen zu Pax-Versicherungsprodukten bereitstellen, nicht zu deren Wettbewerbern.
 Beantworten Sie die Anfrage kurz, unterhaltsam und freundlich.
 Denken Sie daran, dass die Anfrage und die Quellen auf Deutsch sind, Ihre Antwort sollte also auch auf Deutsch sein.
-        ` }
+        `}
     ]
         .concat(messages)
         
@@ -162,7 +188,7 @@ Denken Sie daran, dass die Anfrage und die Quellen auf Deutsch sind, Ihre Antwor
     let result = await openAiChatService.chat.completions.create({
         model: 'gpt-4o',
         messages: contextMessages,
-        max_tokens: 200,
+        max_tokens: 800,
         //stream: true // better for realtime and long responses
     });
 

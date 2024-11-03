@@ -22,6 +22,6 @@ export default async (_based, _payload, _ctx) => {
     const m = await addMessage(chatId, _payload.message, false)
 
     // getSubscriptions().publish(`${chatId}`)
-    await generateNextMessage(chatId)
+    await generateNextMessage(chatId, _payload.tone)
     return { chatId }
   }
