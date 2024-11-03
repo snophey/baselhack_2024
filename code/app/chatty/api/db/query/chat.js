@@ -9,7 +9,7 @@ import { getDatabase } from '../db.js';
 export async function sessionExists(sessionId) {
   const db = await getDatabase();
   return new Promise((resolve, reject) => {
-    const query = 'SELECT 1 FROM chat WHERE session_id = ? LIMIT 1';
+    const query = 'SELECT * FROM chat WHERE session_id = ? LIMIT 1';
 
     db.get(query, [sessionId], (err, row) => {
       if (err) {
@@ -36,6 +36,7 @@ export async function createNewChat(sessionId) {
       if (err) {
         reject(err);
       } else {
+        console.log(`Inserted chat with ID ${this.lastID}. The chat is associated with session ID ${sessionId}`);
         resolve(this.lastID);
       }
     });
