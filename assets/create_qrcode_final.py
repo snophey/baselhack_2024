@@ -54,11 +54,13 @@ def create_svg_qr_with_embedded_svg_and_color(url, center_svg_path, output_path,
 
 # Example usage
 if __name__ == "__main__":
-    url = "https://www.example.com"
+    url = "https://navbar.com"
     center_svg_path = "./images/navbar.svg"  # Path to the SVG file to embed in the center
-    output_path = "qr_code_with_colored_qr_and_embedded_white.svg"
+    
+    for x in ["white", "black", "#8ccd10"]:
+        output_path = f"qr_code_with_colored_qr_and_embedded_{x}.svg"
 
-    # Create a QR code with a color-shifted QR code part and an embedded SVG logo in the center
-    create_svg_qr_with_embedded_svg_and_color(
-        url, center_svg_path, output_path, qr_color="white"  # Change to "white" or another color if needed
-    )
+        # Create a QR code with a color-shifted QR code part and an embedded SVG logo in the center
+        create_svg_qr_with_embedded_svg_and_color(
+            url, center_svg_path, output_path, qr_color=x  # Change to "white" or another color if needed
+        )
