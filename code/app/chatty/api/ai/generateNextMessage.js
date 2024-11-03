@@ -105,7 +105,7 @@ async function getSummarizedTopSearchResults(lastMessage) {
         // }
     });
 
-    let summarizeMessage = "Dies sind die Top-Ergebnisse der Vektorsuche. Fassen Sie sie kurz und prägnant zusammen, ohne Zahlen oder Fakten zu verlieren, damit wir sie bei der nächsten Suche als Systemnachricht verwenden können. Zur Info: Dies ist die Suchanfrage:" +  lastMessage  +  "und dies sind die Suchergebnisse:"
+    let summarizeMessage = "Dies sind die Top-Ergebnisse der Vektorsuche. Fassen wir sie kurz und prägnant zusammen, ohne dabei Zahlen oder wichtige Fakten wie Produktnamen zu verlieren, damit wir sie bei der nächsten Suche als Systemnachricht verwenden können. Zur Info: Dies ist die Suchanfrage:" + lastMessage + "und dies sind die Suchergebnisse:"
     for await (const result of vectorSearchResults.results) {
         //logger.info(`Vector search result from document ${result.document.id}: ${result.document.content}`); // result: object
 
