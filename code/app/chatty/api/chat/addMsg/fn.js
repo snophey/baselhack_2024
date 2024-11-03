@@ -19,9 +19,9 @@ export default async (_based, _payload, _ctx) => {
     }
    
     if(!chatId) throw new Error("Failed to create new chat. ")
+  
     const m = await addMessage(chatId, _payload.message, false)
 
-    // getSubscriptions().publish(`${chatId}`)
     await generateNextMessage(chatId, _payload.tone)
     return { chatId }
   }

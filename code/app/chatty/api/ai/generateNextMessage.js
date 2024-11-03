@@ -2,6 +2,7 @@ import { pino } from "pino";
 import { createOpenAi } from "./indexer/OpenAi.js";
 import { createAzureClients } from "./indexer/AzureClients.js";
 import { addMessage, getAllMessagesByChatId } from "../db/query/message.js";
+import { isReadyToProposeRedirect } from "./utils/proposeRedirect.js";
 
 // Clean document content
 const cleanDocumentContent = (content) => { 
@@ -180,7 +181,18 @@ Denken Sie daran, dass die Anfrage und die Quellen auf Deutsch sind, Ihre Antwor
         `}
     ]
         .concat(messages)
+
         
+    /// CHECK IF GOOD TIME FOR REDIRECT
+    const isReady = await isReadyToProposeRedirect(contextMessages)
+    console.log(isReady)
+    if(isReady) {
+        await addMessage(chatId, "lets gooo!!!!", true)
+        return 
+    }
+    ////
+
+
     const topResultSum = await getSummarizedTopSearchResults(contextMessages[contextMessages.length -1].content)
     contextMessages.push(topResultSum)
     

@@ -15,17 +15,20 @@ const tools = [
         type: "function",
         function: {
             name: "is_ready_to_propose_redirect",
-            description: "Bestimmt, ob es ein passender Zeitpunkt ist, um einen Produkt-Redirect vorzuschlagen, basierend auf dem Nachrichtenverlauf.",
+            description: "Bestimmt, ob es ein passender Zeitpunkt ist, um auf die webseite verwiesen zu werden, basierend  auf dem Nachrichtenverlauf.",
             parameters: {
                 type: "object",
                 properties: {
                     ready: {
                         type: "boolean",
-                        description: "Gibt an, ob es ein guter Zeitpunkt ist, den Redirect vorzuschlagen.",
+                        description: "Gibt an, ob es ein SEHR GUTER Zeitpunkt ist, den Redirect vorzuschlagen.",
                     },
                 },
                 required: ["ready"],
-                additionalProperties: false,
+                additionalProperties: false,        // {
+                    //     content: "Bestimmt, ob es ein passender Zeitpunkt ist, um einen Produkt-Redirect vorzuschlagen, basierend auf dem Nachrichtenverlauf.",
+                    //     role: 'system'
+                    // }
             },
         }
     }
@@ -42,21 +45,21 @@ const tools = [
  */
 export async function isReadyToProposeRedirect(messages) {
     const questions = [
-        {
-            content: "Bestimmt, ob es ein passender Zeitpunkt ist, um einen Produkt-Redirect vorzuschlagen, basierend auf dem Nachrichtenverlauf.",
-            role: 'system'
-        }
     ]
         .concat(messages)
-
+        .concat([
+        {
+            content: "Ist nun ein guter zeitpunkt den offertenrechner anzuzeigen? Es muss klar sein um welches produkt es sich handelt und der benuzer darf keine fragen mehr haben!",
+            role: 'system'
+        }
+        ])
     let response = await openAiChatService.chat.completions.create({
         model: 'gpt-4o',
         messages: questions,
-        max_tokens: 50,
+        max_tokens: 400,
         tools,
     });
 
-    console.log()
     try {
         const result = JSON.parse(response.choices[0].message.tool_calls[0].function.arguments)
         return result.ready;
